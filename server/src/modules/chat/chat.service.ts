@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import OpenAI from "openai";
+import error from "src/utils/error";
 
 @Injectable()
 export class ChatService {
@@ -36,10 +37,8 @@ export class ChatService {
             const assistantMsg = response.choices[0].message;
             this.messages.push(assistantMsg);
             return assistantMsg.content;
-        } catch (error) {
-            console.error(error);
-        } finally {
-            console.log(this.messages);
+        } catch (err: unknown) {
+            throw error(err);
         }
     }
 }
